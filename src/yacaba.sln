@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yacaba", "Yacaba\Yacaba.csproj", "{ACA5CC57-A16C-4074-B64B-35A7065C2BF1}"
 EndProject
@@ -10,6 +10,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yacaba.Web", "Yacaba.Web\Yacaba.Web.csproj", "{A230E091-AECE-4FA7-A8B6-88EF8BB3BCAF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yacaba.Web.Client", "Yacaba.Web.Client\Yacaba.Web.Client.csproj", "{B795E599-BF07-4DF2-87D6-0849652E2B9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "yacaba.AppHost", "yacaba.AppHost\yacaba.AppHost.csproj", "{1D5C9F2A-473E-4B75-814E-CC174D6ED9B4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "yacaba.ServiceDefaults", "yacaba.ServiceDefaults\yacaba.ServiceDefaults.csproj", "{3425207E-DD02-4FA1-9202-39C201F778B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{B795E599-BF07-4DF2-87D6-0849652E2B9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B795E599-BF07-4DF2-87D6-0849652E2B9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B795E599-BF07-4DF2-87D6-0849652E2B9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D5C9F2A-473E-4B75-814E-CC174D6ED9B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D5C9F2A-473E-4B75-814E-CC174D6ED9B4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D5C9F2A-473E-4B75-814E-CC174D6ED9B4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D5C9F2A-473E-4B75-814E-CC174D6ED9B4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3425207E-DD02-4FA1-9202-39C201F778B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3425207E-DD02-4FA1-9202-39C201F778B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3425207E-DD02-4FA1-9202-39C201F778B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3425207E-DD02-4FA1-9202-39C201F778B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
