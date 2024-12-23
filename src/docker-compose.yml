@@ -1,0 +1,6 @@
+services:
+  yacaba.web:
+    image: ${DOCKER_REGISTRY-}yacaba-web
+    build:
+      context: .
+      dockerfile: Yacaba.Web/Dockerfile
