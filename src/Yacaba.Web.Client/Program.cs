@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Yacaba.Shared.Services;
-using Yacaba.Web.Client.Services;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
-// Add device-specific services used by the Yacaba.Shared project
-builder.Services.AddSingleton<IFormFactor, FormFactor>();
+builder.Services.AddAuthorizationCore();
+builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddAuthenticationStateDeserialization();
 
 await builder.Build().RunAsync();

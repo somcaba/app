@@ -8,11 +8,32 @@
 
 <button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
 
+<button class="btn btn-primary" @onclick="OnClick"> Check Runtime </button>
+
 @code {
+
+    [Inject]
+    protected IJSRuntime ijsRuntime { get; set; } = default!;
+
     private int currentCount = 0;
 
     private void IncrementCount()
     {
         currentCount++;
+    }
+
+    private void OnClick()
+    {
+        var isWebAssembly = this.ijsRuntime is IJSInProcessRuntime;
+
+        if (isWebAssembly)
+        {
+            Console.WriteLine("The app is running on WebAssembly");
+        }
+        else
+        {
+            Console.WriteLine("The app is running on sever-side");
+        }
+
     }
 }
