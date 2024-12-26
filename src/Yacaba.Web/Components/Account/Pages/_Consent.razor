@@ -1,0 +1,40 @@
+﻿@page "/Account/Consent"
+
+@attribute [Authorize]
+
+@using Microsoft.Extensions.Primitives
+@using Yacaba.Web.ViewModels.Authorization
+
+<div class="jumbotron">
+    <h1>Authorization</h1>
+
+    <p class="lead text-left">Do you want to grant <strong>@ApplicationName</strong> access to your data? (scopes requested: @Scope)</p>
+
+    <form action="connect/authorize" method="post">
+        <AntiforgeryToken />
+
+        @* Flow the request parameters so they can be received by the Accept/Reject actions: *@
+        @foreach (var parameter in HttpContext.Request.HasFormContentType ?
+        (IEnumerable<KeyValuePair<String, StringValues>>)HttpContext.Request.Form : HttpContext.Request.Query)
+        {
+            <input type="hidden" name="@parameter.Key" value="@parameter.Value" />
+        }
+
+        <input class="btn btn-lg btn-success" name="submit.Accept" type="submit" value="Yes" />
+        <input class="btn btn-lg btn-danger" name="submit.Deny" type="submit" value="No" />
+
+    </form>
+</div>
+
+@code {
+
+    [CascadingParameter]
+    private HttpContext HttpContext { get; set; } = default!;
+
+    [SupplyParameterFromQuery]
+    private String? ApplicationName { get; set; }
+
+    [SupplyParameterFromQuery]
+    private String? Scope { get; set; }
+
+}

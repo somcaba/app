@@ -1,7 +1,0 @@
-@page "/authentication/{action}"
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-<RemoteAuthenticatorView Action="@Action" />
-
-@code{
-    [Parameter] public String Action { get; set; } = default!;
-}
