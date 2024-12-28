@@ -7,13 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\Yacaba.Domain\Yacaba.Domain.csproj" />
-    <ProjectReference Include="..\src\Yacaba.EntityFramework\Yacaba.EntityFramework.csproj" />
+    <Folder Include="Controllers\" />
+    <Folder Include="Application\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Application\" />
+    <ProjectReference Include="..\Yacaba.EntityFramework\Yacaba.EntityFramework.csproj" />
   </ItemGroup>
 
 </Project>
