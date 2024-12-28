@@ -25,7 +25,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yacaba.EntityFramework", "Y
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yacaba.EntityFramework.Postgresql", "Yacaba.EntityFramework.Postgresql\Yacaba.EntityFramework.Postgresql.csproj", "{BFB56226-3E17-40DE-99F9-432B988EE149}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yacaba.Api", "..\Yacaba.Api\Yacaba.Api.csproj", "{5274CF13-8208-4E64-940D-AFA7ED494D51}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yacaba.Api", "Yacaba.Api\Yacaba.Api.csproj", "{5274CF13-8208-4E64-940D-AFA7ED494D51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
