@@ -6,13 +6,15 @@ var postgresPassword = builder.AddParameter("postgresPassword", secret: true);
 
 var postgres = builder.AddPostgres("postgres", postgresUsername, postgresPassword, port: 5432)
     .WithPgAdmin()
-    .WithDataVolume(isReadOnly: false);
+    .WithDataVolume(isReadOnly: false)
+    .WithContainerRuntimeArgs("-p", $"0.0.0.0:5432:5432");
 
 var postgresdb = postgres.AddDatabase("postgresdb", "yacaba");
 #endregion
 
 builder.AddProject<Projects.Yacaba_Web>("yacaba-web")
-    .WithReference(postgresdb);
+    .WithReference(postgresdb)
+    .WaitFor(postgresdb);
 
 
 builder.Build().Run();
