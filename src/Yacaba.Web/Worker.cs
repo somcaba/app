@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using OpenIddict.Abstractions;
-using Yacaba.Web.Data;
+using Yacaba.EntityFramework;
+using Yacaba.EntityFramework.Identity;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace Yacaba.Web;
@@ -15,7 +16,7 @@ public class Worker : IHostedService {
         using IServiceScope scope = _serviceProvider.CreateScope();
 
         ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-        await context.Database.EnsureCreatedAsync(cancellationToken);
+        //await context.Database.EnsureCreatedAsync(cancellationToken);
 
         await RegisterApplicationsAsync(scope.ServiceProvider, cancellationToken);
         await RegisterScopesAsync(scope.ServiceProvider, cancellationToken);

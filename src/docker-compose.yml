@@ -4,3 +4,16 @@ services:
     build:
       context: .
       dockerfile: Yacaba.Web/Dockerfile
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: yacaba
+      POSTGRES_USER: yacaba
+      POSTGRES_PASSWORD: yacaba
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

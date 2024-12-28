@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-using Yacaba.Web.Data;
+using Yacaba.EntityFramework.Identity;
 
 namespace Yacaba.Web.Components.Account
 {

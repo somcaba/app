@@ -2,13 +2,14 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Yacaba.EntityFramework;
+using Yacaba.EntityFramework.Identity;
 using Yacaba.Web;
 using Yacaba.Web.Components;
 using Yacaba.Web.Components.Account;
-using Yacaba.Web.Data;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
@@ -33,16 +34,24 @@ builder.Services.AddAuthentication(options => {
     options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
 }).AddIdentityCookies();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
-builder.Services.AddDbContext<ApplicationDbContext>(options => {
-    options.UseSqlServer(connectionString);
+builder.AddNpgsqlDbContext<ApplicationDbContext>(connectionName: "postgresdb", configureDbContextOptions: options => {
     options.UseOpenIddict();
 });
+builder.EnrichNpgsqlDbContext<ApplicationDbContext>(settings => {
+    settings.DisableRetry = false;
+    settings.CommandTimeout = 30;
+});
+
+//String connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+//builder.Services.AddDbContext<ApplicationDbContext>(options => {
+//    options.UseNpgsql(connectionString);
+//    options.UseOpenIddict();
+//});
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentityCore<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddRoles<IdentityRole>()
+    .AddRoles<ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddSignInManager()
     .AddDefaultTokenProviders();
@@ -136,17 +145,18 @@ builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSe
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
-builder.Services.AddAuthorization(options => options.AddPolicy("CookieAuthenticationPolicy", builder => {
-    builder.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
-    builder.RequireAuthenticatedUser();
-}));
+builder.Services.AddAuthorizationBuilder()
+    .AddPolicy("CookieAuthenticationPolicy", builder => {
+        builder.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
+        builder.RequireAuthenticatedUser();
+});
 
 // Register the worker responsible for seeding the database.
 // Note: in a real world application, this step should be part of a setup script.
 builder.Services.AddHostedService<Worker>();
 
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) {

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Primitives;
 using Yacaba.Web.Components.Account.Pages;
 using Yacaba.Web.Components.Account.Pages.Manage;
-using Yacaba.Web.Data;
+using Yacaba.EntityFramework.Identity;
 
 namespace Microsoft.AspNetCore.Routing
 {

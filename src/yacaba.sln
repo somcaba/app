@@ -23,11 +23,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yacaba.Core", "Yacaba.Core\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yacaba.EntityFramework", "Yacaba.EntityFramework\Yacaba.EntityFramework.csproj", "{06742FBA-4440-499A-8499-4833923FDADA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yacaba.Storage", "Yacaba.Storage\Yacaba.Storage.csproj", "{A70B6719-38B7-4C11-83C6-1BA372146D28}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yacaba.EntityFramework.Postgresql", "Yacaba.EntityFramework.Postgresql\Yacaba.EntityFramework.Postgresql.csproj", "{BFB56226-3E17-40DE-99F9-432B988EE149}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yacaba.Infrastructure", "Yacaba.Infrastructure\Yacaba.Infrastructure.csproj", "{0AAAE15B-68AA-4135-9C4F-D47CAA7B347E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yacaba.Api", "..\Yacaba.Api\Yacaba.Api.csproj", "{5274CF13-8208-4E64-940D-AFA7ED494D51}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,18 +73,14 @@ Global
 		{06742FBA-4440-499A-8499-4833923FDADA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06742FBA-4440-499A-8499-4833923FDADA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06742FBA-4440-499A-8499-4833923FDADA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A70B6719-38B7-4C11-83C6-1BA372146D28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A70B6719-38B7-4C11-83C6-1BA372146D28}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A70B6719-38B7-4C11-83C6-1BA372146D28}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A70B6719-38B7-4C11-83C6-1BA372146D28}.Release|Any CPU.Build.0 = Release|Any CPU
 		{BFB56226-3E17-40DE-99F9-432B988EE149}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{BFB56226-3E17-40DE-99F9-432B988EE149}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BFB56226-3E17-40DE-99F9-432B988EE149}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BFB56226-3E17-40DE-99F9-432B988EE149}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0AAAE15B-68AA-4135-9C4F-D47CAA7B347E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0AAAE15B-68AA-4135-9C4F-D47CAA7B347E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0AAAE15B-68AA-4135-9C4F-D47CAA7B347E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0AAAE15B-68AA-4135-9C4F-D47CAA7B347E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5274CF13-8208-4E64-940D-AFA7ED494D51}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5274CF13-8208-4E64-940D-AFA7ED494D51}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5274CF13-8208-4E64-940D-AFA7ED494D51}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5274CF13-8208-4E64-940D-AFA7ED494D51}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,7 +8,7 @@ using Microsoft.Extensions.Primitives;
 using Microsoft.IdentityModel.Tokens;
 using OpenIddict.Abstractions;
 using OpenIddict.Server.AspNetCore;
-using Yacaba.Web.Data;
+using Yacaba.EntityFramework.Identity;
 using Yacaba.Web.Helpers;
 using Yacaba.Web.ViewModels.Authorization;
 using static OpenIddict.Abstractions.OpenIddictConstants;
