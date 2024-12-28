@@ -12,8 +12,10 @@ services:
       POSTGRES_USER: yacaba
       POSTGRES_PASSWORD: yacaba
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
+  pgAdmin:
+    image: dpage/pgadmin4
+    environment:
+        CHECK_EMAIL_DELIVERABILITY: false
+        ALLOW_SPECIAL_EMAIL_DOMAINS: local.dev
+        PGADMIN_DEFAULT_EMAIL: yacaba@local.dev
+        PGADMIN_DEFAULT_PASSWORD: yacaba
