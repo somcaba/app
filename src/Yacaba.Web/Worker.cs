@@ -1,7 +1,6 @@
 ﻿using System.Globalization;
 using OpenIddict.Abstractions;
 using Yacaba.EntityFramework;
-using Yacaba.EntityFramework.Identity;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace Yacaba.Web;

@@ -1,7 +1,16 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using AutoMapper.Extensions.ExpressionMapping;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.OData;
+using Microsoft.AspNetCore.OData.Query.Expressions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Logging;
+using Yacaba.Api;
+using Yacaba.Api.OData.FilterBinders;
+using Yacaba.Domain;
 using Yacaba.EntityFramework;
 using Yacaba.EntityFramework.Identity;
 using Yacaba.Web;
@@ -26,7 +35,9 @@ builder.Services.AddAntiforgery(options => {
     options.HeaderName = "X-XSRF-TOKEN";
     options.Cookie.Name = "__Yacaba-X-XSRF-TOKEN";
     options.Cookie.SameSite = SameSiteMode.Strict;
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    if (Environment.GetEnvironmentVariable("NON_SECURE_ENVIRONMENT") != "true") {
+        options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    }
 });
 
 builder.Services.AddAuthentication(options => {
@@ -142,19 +153,52 @@ builder.Services.AddOpenIddict()
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
-builder.Services.AddControllersWithViews();
+var modelBuilder = new YacabaOdataModelBuilder();
+
+builder.Services.AddControllersWithViews()
+    .AddApplicationPart(typeof(YacabaOdataModelBuilder).Assembly)
+    .AddControllersAsServices()
+    .AddOData(options => {
+        options.TimeZone = TimeZoneInfo.Utc;
+        options.EnableQueryFeatures();
+        options.RouteOptions.EnableNonParenthesisForEmptyParameterFunction = true;
+        options.RouteOptions.EnableActionNameCaseInsensitive = true;
+        options.RouteOptions.EnableControllerNameCaseInsensitive = true;
+        options.RouteOptions.EnablePropertyNameCaseInsensitive = true;
+        options.RouteOptions.EnableKeyAsSegment = true;
+        options.RouteOptions.EnableKeyInParenthesis = false;
+        options.AddRouteComponents(routePrefix: "api", model: modelBuilder.GetEdmModel(), configureServices: services => {
+            services.AddSingleton<IFilterBinder, CustomFilterBinder>();
+        });
+    })
+    .AddJsonOptions(options => {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+        options.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+        options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    });
+
+
+builder.Services.AddAutoMapper(options => {
+    options.AddExpressionMapping();
+}, typeof(_DomainAssembly).Assembly);
+
+builder.Services.AddMediatR(options => {
+    options.RegisterServicesFromAssembly(typeof(_ApiAssembly).Assembly);
+});
+
+builder.Services.AddYacabaEntityFrameworkStores();
+
 builder.Services.AddRazorPages();
 
 builder.Services.AddAuthorizationBuilder()
     .AddPolicy("CookieAuthenticationPolicy", builder => {
         builder.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
         builder.RequireAuthenticatedUser();
-});
+    });
 
 // Register the worker responsible for seeding the database.
 // Note: in a real world application, this step should be part of a setup script.
 builder.Services.AddHostedService<Worker>();
-
 
 WebApplication app = builder.Build();
 
@@ -162,6 +206,9 @@ WebApplication app = builder.Build();
 if (app.Environment.IsDevelopment()) {
     app.UseWebAssemblyDebugging();
     app.UseMigrationsEndPoint();
+    app.UseODataRouteDebug();
+
+    IdentityModelEventSource.ShowPII = true;
 } else {
     app.UseExceptionHandler("/Error", createScopeForErrors: true);
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
@@ -169,6 +216,8 @@ if (app.Environment.IsDevelopment()) {
 }
 
 app.UseHttpsRedirection();
+
+app.UseRouting();
 
 app.UseAntiforgery();
 

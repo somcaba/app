@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Yacaba.Domain.Models;
 
-namespace Yacaba.EntityFramework.Configuration {
-    public class OrganisationConfguration : IEntityTypeConfiguration<Organisation>{
+namespace Yacaba.EntityFramework.Datas.Configuration {
+    public class OrganisationConfguration : IEntityTypeConfiguration<Organisation> {
         public void Configure(EntityTypeBuilder<Organisation> builder) {
             builder.ToTable("ORGANISATIONS");
             builder.HasKey(p => p.Id);
