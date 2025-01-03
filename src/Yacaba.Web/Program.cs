@@ -1,16 +1,14 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using AutoMapper.Extensions.ExpressionMapping;
+using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;
-using Microsoft.AspNetCore.OData.Query.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Logging;
+using Scalar.AspNetCore;
 using Yacaba.Api;
-using Yacaba.Api.OData.FilterBinders;
-using Yacaba.Domain;
 using Yacaba.EntityFramework;
 using Yacaba.EntityFramework.Identity;
 using Yacaba.Web;
@@ -168,7 +166,7 @@ builder.Services.AddControllersWithViews()
         options.RouteOptions.EnableKeyAsSegment = true;
         options.RouteOptions.EnableKeyInParenthesis = false;
         options.AddRouteComponents(routePrefix: "api", model: modelBuilder.GetEdmModel(), configureServices: services => {
-            services.AddSingleton<IFilterBinder, CustomFilterBinder>();
+            //services.AddSingleton<IFilterBinder, CustomFilterBinder>();
         });
     })
     .AddJsonOptions(options => {
@@ -178,13 +176,15 @@ builder.Services.AddControllersWithViews()
     });
 
 
-builder.Services.AddAutoMapper(options => {
-    options.AddExpressionMapping();
-}, typeof(_DomainAssembly).Assembly);
+//builder.Services.AddAutoMapper(options => {
+//    options.AddExpressionMapping();
+//}, typeof(_DomainAssembly).Assembly);
 
 builder.Services.AddMediatR(options => {
     options.RegisterServicesFromAssembly(typeof(_ApiAssembly).Assembly);
 });
+
+builder.Services.AddValidatorsFromAssembly(typeof(_ApiAssembly).Assembly);
 
 builder.Services.AddYacabaEntityFrameworkStores();
 
@@ -195,6 +195,8 @@ builder.Services.AddAuthorizationBuilder()
         builder.AddAuthenticationSchemes(CookieAuthenticationDefaults.AuthenticationScheme);
         builder.RequireAuthenticatedUser();
     });
+
+builder.Services.AddOpenApi();
 
 // Register the worker responsible for seeding the database.
 // Note: in a real world application, this step should be part of a setup script.
@@ -207,6 +209,8 @@ if (app.Environment.IsDevelopment()) {
     app.UseWebAssemblyDebugging();
     app.UseMigrationsEndPoint();
     app.UseODataRouteDebug();
+    app.MapOpenApi();
+    app.MapScalarApiReference();
 
     IdentityModelEventSource.ShowPII = true;
 } else {

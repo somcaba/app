@@ -15,6 +15,8 @@ namespace Yacaba.EntityFramework {
             base.OnConfiguring(optionsBuilder);
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
+            //modelBuilder.UseIdentityByDefaultColumns();
+
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
             //AuditableConfiguration.Configure(modelBuilder);

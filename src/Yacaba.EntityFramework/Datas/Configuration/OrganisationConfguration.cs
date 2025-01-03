@@ -8,7 +8,7 @@ namespace Yacaba.EntityFramework.Datas.Configuration {
             builder.ToTable("ORGANISATIONS");
             builder.HasKey(p => p.Id);
 
-            builder.Property(p => p.Id).HasConversion(p => p.Value, p => new OrganisationId(p)).HasColumnName("id_organisation_pk");
+            builder.Property(p => p.Id).ValueGeneratedOnAdd().HasColumnName("id_organisation_pk");
             builder.Property(p => p.Name).HasMaxLength(200).HasColumnName("name");
             builder.Property(p => p.Image).HasColumnName("image");
             builder.Property(p => p.IsOffical).HasColumnName("is_official");

@@ -7,11 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\_not-workng.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper.Extensions.ExpressionMapping" Version="7.0.2" />
+    <PackageReference Include="FluentValidation" Version="11.11.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
     <PackageReference Include="Microsoft.AspNetCore.OData" Version="9.1.1" />
   </ItemGroup>
@@ -21,8 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Application\Organisation\Commands\" />
-    <Folder Include="Application\Organisation\Events\" />
+    <None Include="Controllers\_not-workng.cs" />
   </ItemGroup>
 
 </Project>

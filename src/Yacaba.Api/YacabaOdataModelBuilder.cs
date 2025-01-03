@@ -11,13 +11,8 @@ namespace Yacaba.Api {
             EntitySetConfiguration<Organisation> organisationEntitySet = _modelBuilder.EntitySet<Organisation>("organisations");
 
             EntityTypeConfiguration<Organisation> organisationEntityType = organisationEntitySet.EntityType;
-            organisationEntityType.HasKey(p => p.OrganisationId);
-            organisationEntityType.Ignore(p => p.Id);
-            organisationEntityType.Property(p => p.OrganisationId).Name = nameof(Organisation.Id);
-
-            //var organisation = _modelBuilder.StructuralTypes.First(t => t.ClrType == typeof(Organisation));
-            //organisation.AddProperty(typeof(Organisation).GetProperty("OrganisationId")).Name = "Id";
-
+            organisationEntityType.HasKey(p => p.Id);
+            
             _modelBuilder.EnableLowerCamelCase();
         }
 
