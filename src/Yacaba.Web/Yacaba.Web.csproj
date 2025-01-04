@@ -36,4 +36,8 @@
     <PackageReference Include="Scalar.AspNetCore" Version="1.2.72" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+  </ItemGroup>
+
 </Project>
