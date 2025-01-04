@@ -1,10 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Yacaba.Domain.Models {
+    public class Gym {
 
-namespace Yacaba.Domain.Models {
-    internal class Gym {
+        public Int64 Id { get; set; } = default!;
+
+        public required String Name { get; set; }
+
+        public String? Image { get; set; }
+
+        public String? Contact { get; set; }
+        public Address? Address { get; set; }
+        public GpsLocation? Location { get; set; }
+
+        public Boolean IsOffical { get; set; }
+
+        public Int64? OrganisationId { get; set; }
+        public Organisation? Organisation { get; set; }
+
     }
 }

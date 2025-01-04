@@ -11,6 +11,7 @@ namespace Yacaba.EntityFramework.Datas.Configuration {
             builder.Property(p => p.Id).ValueGeneratedOnAdd().HasColumnName("id_organisation_pk");
             builder.Property(p => p.Name).HasMaxLength(200).HasColumnName("name");
             builder.Property(p => p.Image).HasColumnName("image");
+            builder.Property(p => p.Contact).HasColumnName("contact");
             builder.Property(p => p.IsOffical).HasColumnName("is_official");
 
             builder.HasIndex(p => p.Name).IsUnique(true).HasDatabaseName("ix_organisation_name");
