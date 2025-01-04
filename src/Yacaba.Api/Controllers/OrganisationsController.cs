@@ -13,7 +13,7 @@ using Yacaba.Domain.Requests;
 namespace Yacaba.Api.Controllers {
 
     [ApiController]
-    [Route("api/organisations")]
+    [Route("/api/organisations")]
     public class OrganisationsController : ODataController {
 
         private readonly IMediator _mediator;
@@ -27,7 +27,7 @@ namespace Yacaba.Api.Controllers {
         [HttpGet]
         [EnableQuery]
         [ProducesResponseType(typeof(PageResult<Organisation>), statusCode: (Int32)HttpStatusCode.OK)]
-        public async Task<ActionResult<IAsyncEnumerable<Organisation>>> GetAsync(CancellationToken cancellationToken = default) {
+        public async Task<ActionResult<IAsyncEnumerable<Organisation>>> Get(CancellationToken cancellationToken = default) {
             var command = new OrganisionGetCollectionQuery();
             IQueryable<Organisation> query = await _mediator.Send(command, cancellationToken);
             query = query.AsNoTracking().AsQueryable();
@@ -40,7 +40,7 @@ namespace Yacaba.Api.Controllers {
         [ProducesResponseType(typeof(ProblemDetails), statusCode: (Int32)HttpStatusCode.NotFound)]
         [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
         [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> GetByIdAsync(Int64 key, CancellationToken cancellationToken = default) {
+        public async Task<IActionResult> GetById([FromRoute] Int64 key, CancellationToken cancellationToken = default) {
             var command = new OrganisionGetByIdQuery(key);
             Organisation? existingOrganisation = await _mediator.Send(command, cancellationToken);
             if (existingOrganisation == null) { return NotFound(); }
@@ -52,10 +52,10 @@ namespace Yacaba.Api.Controllers {
         [ProducesResponseType(typeof(ProblemDetails), statusCode: (Int32)HttpStatusCode.NotFound)]
         [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
         [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> CreateAsync(OrganisationCreateRequest request, CancellationToken cancellationToken = default) {
+        public async Task<IActionResult> Post([FromBody] OrganisationCreateRequest request, CancellationToken cancellationToken = default) {
             var command = new OrganisationCreateCommand(request);
             Organisation newOrganisation = await _mediator.Send(command, cancellationToken);
-            return CreatedAtAction("GetById", new { key = newOrganisation.Id }, newOrganisation);
+            return CreatedAtAction(nameof(GetById), new { key = newOrganisation.Id }, newOrganisation);
         }
 
         [HttpPut("{key}")]
@@ -63,7 +63,7 @@ namespace Yacaba.Api.Controllers {
         [ProducesResponseType(typeof(ProblemDetails), statusCode: (Int32)HttpStatusCode.NotFound)]
         [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
         [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> UpdateAsync(Int64 key, OrganisationUpdateRequest request, CancellationToken cancellationToken = default) {
+        public async Task<IActionResult> Put([FromRoute] Int64 key, [FromBody] OrganisationUpdateRequest request, CancellationToken cancellationToken = default) {
             var command = new OrganisationUpdateCommand(key, request);
             await _mediator.Send(command, cancellationToken);
             return NoContent();
@@ -74,7 +74,7 @@ namespace Yacaba.Api.Controllers {
         [ProducesResponseType(typeof(ProblemDetails), statusCode: (Int32)HttpStatusCode.NotFound)]
         [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
         [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> DeleteAsync(Int64 key, CancellationToken cancellationToken = default) {
+        public async Task<IActionResult> Delete([FromRoute] Int64 key, CancellationToken cancellationToken = default) {
             var command = new OrganisationDeleteCommand(key);
             await _mediator.Send(command, cancellationToken);
             return NoContent();

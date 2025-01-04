@@ -157,6 +157,7 @@ builder.Services.AddControllersWithViews()
     .AddApplicationPart(typeof(YacabaOdataModelBuilder).Assembly)
     .AddControllersAsServices()
     .AddOData(options => {
+        options.EnableAttributeRouting = true;
         options.TimeZone = TimeZoneInfo.Utc;
         options.EnableQueryFeatures();
         options.RouteOptions.EnableNonParenthesisForEmptyParameterFunction = true;
@@ -209,6 +210,7 @@ if (app.Environment.IsDevelopment()) {
     app.UseWebAssemblyDebugging();
     app.UseMigrationsEndPoint();
     app.UseODataRouteDebug();
+    
     app.MapOpenApi();
     app.MapScalarApiReference();
 
@@ -220,6 +222,9 @@ if (app.Environment.IsDevelopment()) {
 }
 
 app.UseHttpsRedirection();
+
+app.UseODataQueryRequest();
+app.UseODataBatching();
 
 app.UseRouting();
 
