@@ -4,19 +4,19 @@ using Yacaba.Domain.Stores;
 
 namespace Yacaba.Api.Application.Queries {
 
-    public record OrganisionGetCollectionQuery() : IRequest<IQueryable<Organisation>> { }
+    public record OrganisationGetCollectionQuery() : IRequest<IQueryable<Organisation>> { }
 
-    public class OrganisionGetCollectionHandler : IRequestHandler<OrganisionGetCollectionQuery, IQueryable<Organisation>> {
+    public class OrganisationGetCollectionHandler : IRequestHandler<OrganisationGetCollectionQuery, IQueryable<Organisation>> {
 
         private readonly IOrganisationStore _store;
 
-        public OrganisionGetCollectionHandler(
+        public OrganisationGetCollectionHandler(
             IOrganisationStore store
         ) {
             _store = store;
         }
 
-        public Task<IQueryable<Organisation>> Handle(OrganisionGetCollectionQuery request, CancellationToken cancellationToken) {
+        public Task<IQueryable<Organisation>> Handle(OrganisationGetCollectionQuery request, CancellationToken cancellationToken) {
             return Task.FromResult(_store.GetAll());
         }
     }

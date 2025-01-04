@@ -5,11 +5,11 @@ using Yacaba.Domain.Requests;
 using Yacaba.Domain.Stores;
 
 namespace Yacaba.EntityFramework.Stores {
-    public class EntityframeworkOrganisationStore : IOrganisationStore {
+    public class EntityFrameworkOrganisationStore : IOrganisationStore {
 
         private readonly ApplicationDbContext _context;
 
-        public EntityframeworkOrganisationStore(
+        public EntityFrameworkOrganisationStore(
             ApplicationDbContext context
         ) {
             _context = context;

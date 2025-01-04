@@ -7,6 +7,7 @@ namespace Yacaba.EntityFramework {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, ApplicationRole, String> {
 
         public DbSet<Organisation> Organisations { get; set; }
+        public DbSet<Gym> Gyms { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 

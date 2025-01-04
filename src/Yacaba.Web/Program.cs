@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Logging;
 using Scalar.AspNetCore;
 using Yacaba.Api;
+using Yacaba.Core.Odata;
+using Yacaba.Core.Odata.ModelBuilder;
 using Yacaba.EntityFramework;
 using Yacaba.EntityFramework.Identity;
 using Yacaba.Web;
@@ -151,10 +153,10 @@ builder.Services.AddOpenIddict()
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
-var modelBuilder = new YacabaOdataModelBuilder();
+OdataModelBuilder modelBuilder = builder.Services.AddOdataModelBuilder(typeof(_ApiAssembly).Assembly);
 
 builder.Services.AddControllersWithViews()
-    .AddApplicationPart(typeof(YacabaOdataModelBuilder).Assembly)
+    .AddApplicationPart(typeof(_ApiAssembly).Assembly)
     .AddControllersAsServices()
     .AddOData(options => {
         options.EnableAttributeRouting = true;
@@ -210,7 +212,7 @@ if (app.Environment.IsDevelopment()) {
     app.UseWebAssemblyDebugging();
     app.UseMigrationsEndPoint();
     app.UseODataRouteDebug();
-    
+
     app.MapOpenApi();
     app.MapScalarApiReference();
 
