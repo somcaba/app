@@ -2,7 +2,7 @@
 using Yacaba.Core.Odata.ModelBuilder;
 using Yacaba.Domain.Models;
 
-namespace Yacaba.Api.Odata {
+namespace Yacaba.Api.Odata.Models {
     public class GymModelBuilder : IModelBuilder {
         public void Configure(ODataModelBuilder modelBuilder) {
             EntitySetConfiguration<Gym> gymEntitySet = modelBuilder.EntitySet<Gym>("gyms");

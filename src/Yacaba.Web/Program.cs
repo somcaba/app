@@ -5,12 +5,14 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;
+using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Logging;
 using Scalar.AspNetCore;
 using Yacaba.Api;
 using Yacaba.Core.Odata;
 using Yacaba.Core.Odata.ModelBuilder;
+using Yacaba.Core.Odata.Serializer;
 using Yacaba.EntityFramework;
 using Yacaba.EntityFramework.Identity;
 using Yacaba.Web;
@@ -153,7 +155,10 @@ builder.Services.AddOpenIddict()
 
 builder.Services.AddSingleton<IEmailSender<ApplicationUser>, IdentityNoOpEmailSender>();
 
-OdataModelBuilder modelBuilder = builder.Services.AddOdataModelBuilder(typeof(_ApiAssembly).Assembly);
+OdataModelBuilder modelBuilder = builder.Services.AddOdataModelBuilder(
+    typeof(_ApiAssembly).Assembly,
+    typeof(OdataConfigurationBuilderExtensions).Assembly
+);
 
 builder.Services.AddControllersWithViews()
     .AddApplicationPart(typeof(_ApiAssembly).Assembly)
@@ -170,6 +175,8 @@ builder.Services.AddControllersWithViews()
         options.RouteOptions.EnableKeyInParenthesis = false;
         options.AddRouteComponents(routePrefix: "api", model: modelBuilder.GetEdmModel(), configureServices: services => {
             //services.AddSingleton<IFilterBinder, CustomFilterBinder>();
+            services.AddOdataLinkProvider(typeof(_ApiAssembly).Assembly);
+            services.AddSingleton<IODataSerializerProvider, CustomODataSerializerProvider>();
         });
     })
     .AddJsonOptions(options => {
