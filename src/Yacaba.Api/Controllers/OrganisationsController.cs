@@ -24,7 +24,7 @@ namespace Yacaba.Api.Controllers {
             _mediator = mediator;
         }
 
-        [HttpGet]
+        [HttpGet(Name = "Organisation.GetAll")]
         [EnableQuery]
         [ProducesResponseType(typeof(PageResult<Organisation>), statusCode: (Int32)HttpStatusCode.OK)]
         public async Task<ActionResult<IAsyncEnumerable<Organisation>>> Get(CancellationToken cancellationToken = default) {
@@ -34,47 +34,31 @@ namespace Yacaba.Api.Controllers {
             return Ok(query);
         }
 
-        [HttpGet("{key}")]
+        [HttpGet("{key}", Name = "Organisation.GetById")]
         [EnableQuery]
-        [ProducesResponseType(typeof(SingleResult<Organisation>), statusCode: (Int32)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ProblemDetails), statusCode: (Int32)HttpStatusCode.NotFound)]
-        [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> GetById([FromRoute] Int64 key, CancellationToken cancellationToken = default) {
+        public async Task<ActionResult<SingleResult<Organisation>>> GetById([FromRoute] Int64 key, CancellationToken cancellationToken = default) {
             var command = new OrganisationGetByIdQuery(key);
             Organisation? existingOrganisation = await _mediator.Send(command, cancellationToken);
             if (existingOrganisation == null) { return NotFound(); }
             return Ok(existingOrganisation);
         }
 
-        [HttpPost]
-        [ProducesResponseType(typeof(CreatedAtActionResult), statusCode: (Int32)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(ProblemDetails), statusCode: (Int32)HttpStatusCode.NotFound)]
-        [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> Post([FromBody] OrganisationCreateRequest request, CancellationToken cancellationToken = default) {
+        [HttpPost(Name = "Organisation.Create")]
+        public async Task<ActionResult<CreatedAtActionResult>> Post([FromBody] OrganisationCreateRequest request, CancellationToken cancellationToken = default) {
             var command = new OrganisationCreateCommand(request);
             Organisation newOrganisation = await _mediator.Send(command, cancellationToken);
             return CreatedAtAction(nameof(GetById), new { key = newOrganisation.Id }, newOrganisation);
         }
 
-        [HttpPut("{key}")]
-        [ProducesResponseType((Int32)HttpStatusCode.NoContent)]
-        [ProducesResponseType(typeof(ProblemDetails), statusCode: (Int32)HttpStatusCode.NotFound)]
-        [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> Put([FromRoute] Int64 key, [FromBody] OrganisationUpdateRequest request, CancellationToken cancellationToken = default) {
+        [HttpPut("{key}", Name = "Organisation.Update")]
+        public async Task<ActionResult<NoContentResult>> Put([FromRoute] Int64 key, [FromBody] OrganisationUpdateRequest request, CancellationToken cancellationToken = default) {
             var command = new OrganisationUpdateCommand(key, request);
             await _mediator.Send(command, cancellationToken);
             return NoContent();
         }
 
-        [HttpDelete("{key}")]
-        [ProducesResponseType((Int32)HttpStatusCode.NoContent)]
-        [ProducesResponseType(typeof(ProblemDetails), statusCode: (Int32)HttpStatusCode.NotFound)]
-        [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> Delete([FromRoute] Int64 key, CancellationToken cancellationToken = default) {
+        [HttpDelete("{key}", Name = "Organisation.Delete")]
+        public async Task<ActionResult<NoContentResult>> Delete([FromRoute] Int64 key, CancellationToken cancellationToken = default) {
             var command = new OrganisationDeleteCommand(key);
             await _mediator.Send(command, cancellationToken);
             return NoContent();
