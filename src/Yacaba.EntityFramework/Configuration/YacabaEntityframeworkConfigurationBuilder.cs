@@ -7,6 +7,7 @@ namespace Microsoft.Extensions.DependencyInjection {
         public static void AddYacabaEntityFrameworkStores(this IServiceCollection services) {
             services.AddTransient<IOrganisationStore, EntityFrameworkOrganisationStore>();
             services.AddTransient<IGymStore, EntityFrameworkGymStore>();
+            services.AddTransient<IWallStore, EntityFrameworkWallStore>();
         }
 
     }

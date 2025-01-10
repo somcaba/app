@@ -13,12 +13,12 @@ using Yacaba.Domain.Requests;
 namespace Yacaba.Api.Controllers {
 
     [ApiController]
-    [Route("/api/gyms")]
-    public class GymsController : ODataController {
+    [Route("/api/walls")]
+    public class WallsController : ODataController {
 
         private readonly IMediator _mediator;
 
-        public GymsController(
+        public WallsController(
             IMediator mediator
         ) {
             _mediator = mediator;
@@ -26,13 +26,13 @@ namespace Yacaba.Api.Controllers {
 
         [HttpGet]
         [EnableQuery]
-        [ProducesResponseType(typeof(IEnumerable<Gym>), statusCode: StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<Wall>), statusCode: StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
         [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> Get(CancellationToken cancellationToken = default) {
-            var command = new GymGetCollectionQuery();
-            IQueryable<Gym> query = await _mediator.Send(command, cancellationToken);
+            var command = new WallGetCollectionQuery();
+            IQueryable<Wall> query = await _mediator.Send(command, cancellationToken);
             query = query.AsNoTracking().AsQueryable();
             return Ok(query);
         }
@@ -43,21 +43,22 @@ namespace Yacaba.Api.Controllers {
         [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
         [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> GetById([FromRoute] Int64 key, CancellationToken cancellationToken = default) {
-            var command = new GymGetByIdQuery(key);
-            Gym? existingGym = await _mediator.Send(command, cancellationToken);
-            if (existingGym == null) { return NotFound(); }
-            return Ok(existingGym);
+            var command = new WallGetByIdQuery(key);
+            Wall? existingWall = await _mediator.Send(command, cancellationToken);
+            if (existingWall == null) { return NotFound(); }
+            return Ok(existingWall);
         }
 
         [HttpPost]
-        [ProducesResponseType(typeof(Gym), statusCode: StatusCodes.Status200OK)]
+        [EnableQuery]
+        [ProducesResponseType(typeof(Wall), statusCode: StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
         [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> Post([FromBody] GymCreateRequest request, CancellationToken cancellationToken = default) {
-            var command = new GymCreateCommand(request);
-            Gym newGym = await _mediator.Send(command, cancellationToken);
-            return CreatedAtAction(nameof(GetById), new { key = newGym.Id }, newGym);
+        public async Task<IActionResult> Post([FromBody] WallCreateRequest request, CancellationToken cancellationToken = default) {
+            var command = new WallCreateCommand(request);
+            Wall newWall = await _mediator.Send(command, cancellationToken);
+            return CreatedAtAction(nameof(GetById), new { key = newWall.Id }, newWall);
         }
 
         [HttpPut("{key}")]
@@ -65,8 +66,8 @@ namespace Yacaba.Api.Controllers {
         [ProducesResponseType(typeof(ProblemDetails), statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
         [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
-        public async Task<IActionResult> Put([FromRoute] Int64 key, [FromBody] GymUpdateRequest request, CancellationToken cancellationToken = default) {
-            var command = new GymUpdateCommand(key, request);
+        public async Task<IActionResult> Put([FromRoute] Int64 key, [FromBody] WallUpdateRequest request, CancellationToken cancellationToken = default) {
+            var command = new WallUpdateCommand(key, request);
             await _mediator.Send(command, cancellationToken);
             return NoContent();
         }
@@ -77,7 +78,7 @@ namespace Yacaba.Api.Controllers {
         [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
         [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
         public async Task<IActionResult> Delete([FromRoute] Int64 key, CancellationToken cancellationToken = default) {
-            var command = new GymDeleteCommand(key);
+            var command = new WallDeleteCommand(key);
             await _mediator.Send(command, cancellationToken);
             return NoContent();
         }

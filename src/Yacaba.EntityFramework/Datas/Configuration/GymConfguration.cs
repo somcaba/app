@@ -33,6 +33,7 @@ namespace Yacaba.EntityFramework.Datas.Configuration {
             builder
                 .HasOne(p => p.Organisation)
                 .WithMany(p => p.Gyms)
+                .HasForeignKey(p => p.OrganisationId)
                 .HasConstraintName("fk_gym_organisation")
                 .OnDelete(DeleteBehavior.Cascade);
 

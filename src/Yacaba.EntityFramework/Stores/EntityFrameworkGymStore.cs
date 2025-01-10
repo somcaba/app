@@ -16,7 +16,9 @@ namespace Yacaba.EntityFramework.Stores {
         }
 
         public Task<Gym?> GetByIdAsync(Int64 id, CancellationToken cancellationToken = default) {
-            return _context.Gyms.Where(p => p.Id == id).SingleOrDefaultAsync(cancellationToken: cancellationToken);
+            return _context.Gyms.Where(p => p.Id == id)
+                .Include(p => p.Organisation)
+                .SingleOrDefaultAsync(cancellationToken: cancellationToken);
         }
 
         public IQueryable<Gym> GetAll() => _context.Gyms;

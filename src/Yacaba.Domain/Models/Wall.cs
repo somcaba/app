@@ -1,10 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Yacaba.Domain.Models {
+    public class Wall {
 
-namespace Yacaba.Domain.Models {
-    internal class Wall {
+        public Int64 Id { get; set; }
+
+        public required String Name { get; set; }
+        public required String Image { get; set; }
+        public required WallType WallType { get; set; }
+        public required Int32 Angle { get; set; }
+
+        public Int64 GymId { get; set; }
+        public required Gym Gym { get; set; }
+
     }
 }

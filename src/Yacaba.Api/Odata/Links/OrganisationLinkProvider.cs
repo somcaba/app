@@ -3,7 +3,7 @@ using Yacaba.Core.Odata.LinkProvider;
 using Yacaba.Domain.Models;
 
 namespace Yacaba.Api.Odata.Links {
-    public class OrganiationLinkProvider : ILinkProvider<Organisation> {
+    public class OrganisationLinkProvider : ILinkProvider<Organisation> {
         public Task<IEnumerable<IInstanceLink>> ExecuteAsync(LinkProviderContext<Organisation> linkProviderContext, CancellationToken cancellationToken) {
             var links = new List<IInstanceLink> {
                 new DefaultInstanceLink("gyms", linkProviderContext.LinkGenerator.GetUriByRouteValues(linkProviderContext.ResourceContext.Request.HttpContext, routeName: "api/gyms", values: new RouteValueDictionary {

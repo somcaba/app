@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using MediatR;
-using Yacaba.Api.Application.Events;
 using Yacaba.Domain.Models;
 using Yacaba.Domain.Requests;
 using Yacaba.Domain.Stores;
@@ -30,12 +29,12 @@ namespace Yacaba.Api.Application.Commands {
         public async Task<Gym> Handle(GymCreateCommand request, CancellationToken cancellationToken) {
             await _validator.ValidateAndThrowAsync(request.Request, cancellationToken: cancellationToken).ConfigureAwait(false);
 
-            Gym organisation = await _store.CreateAsync(request.Request, cancellationToken: cancellationToken).ConfigureAwait(false);
+            Gym gym = await _store.CreateAsync(request.Request, cancellationToken: cancellationToken).ConfigureAwait(false);
             await _store.SaveChangesAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
 
-            //await _publisher.Publish(new GymCreatedEvent(organisation), cancellationToken: cancellationToken).ConfigureAwait(false);
+            //await _publisher.Publish(new GymCreatedEvent(gym), cancellationToken: cancellationToken).ConfigureAwait(false);
 
-            return organisation;
+            return gym;
         }
     }
 

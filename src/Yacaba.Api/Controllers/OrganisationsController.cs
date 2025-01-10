@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using System.Net;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -27,7 +28,10 @@ namespace Yacaba.Api.Controllers {
         [HttpGet]
         [EnableQuery]
         [ProducesResponseType(typeof(IEnumerable<Organisation>), statusCode: StatusCodes.Status200OK)]
-        public async Task<ActionResult<PageResult<Organisation>>> Get(CancellationToken cancellationToken = default) {
+        [ProducesResponseType(typeof(ProblemDetails), statusCode: StatusCodes.Status404NotFound)]
+        [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> Get(CancellationToken cancellationToken = default) {
             var command = new OrganisationGetCollectionQuery();
             IQueryable<Organisation> query = await _mediator.Send(command, cancellationToken);
             query = query.AsNoTracking().AsQueryable();
@@ -36,7 +40,10 @@ namespace Yacaba.Api.Controllers {
 
         [HttpGet("{key}")]
         [EnableQuery]
-        public async Task<ActionResult<Organisation>> GetById([FromRoute] Int64 key, CancellationToken cancellationToken = default) {
+        [ProducesResponseType(typeof(ProblemDetails), statusCode: StatusCodes.Status404NotFound)]
+        [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> GetById([FromRoute] Int64 key, CancellationToken cancellationToken = default) {
             var command = new OrganisationGetByIdQuery(key);
             Organisation? existingOrganisation = await _mediator.Send(command, cancellationToken);
             if (existingOrganisation == null) { return NotFound(); }
@@ -44,21 +51,33 @@ namespace Yacaba.Api.Controllers {
         }
 
         [HttpPost]
-        public async Task<ActionResult<CreatedAtActionResult>> Post([FromBody] OrganisationCreateRequest request, CancellationToken cancellationToken = default) {
+        [ProducesResponseType(typeof(Organisation), statusCode: StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ProblemDetails), statusCode: StatusCodes.Status404NotFound)]
+        [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> Post([FromBody] OrganisationCreateRequest request, CancellationToken cancellationToken = default) {
             var command = new OrganisationCreateCommand(request);
             Organisation newOrganisation = await _mediator.Send(command, cancellationToken);
             return CreatedAtAction(nameof(GetById), new { key = newOrganisation.Id }, newOrganisation);
         }
-
+        
         [HttpPut("{key}")]
-        public async Task<ActionResult<NoContentResult>> Put([FromRoute] Int64 key, [FromBody] OrganisationUpdateRequest request, CancellationToken cancellationToken = default) {
+        [ProducesResponseType(statusCode: StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), statusCode: StatusCodes.Status404NotFound)]
+        [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> Put([FromRoute] Int64 key, [FromBody] OrganisationUpdateRequest request, CancellationToken cancellationToken = default) {
             var command = new OrganisationUpdateCommand(key, request);
             await _mediator.Send(command, cancellationToken);
             return NoContent();
         }
 
         [HttpDelete("{key}")]
-        public async Task<ActionResult<NoContentResult>> Delete([FromRoute] Int64 key, CancellationToken cancellationToken = default) {
+        [ProducesResponseType(statusCode: StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), statusCode: StatusCodes.Status404NotFound)]
+        [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((Int32)HttpStatusCode.InternalServerError)]
+        public async Task<IActionResult> Delete([FromRoute] Int64 key, CancellationToken cancellationToken = default) {
             var command = new OrganisationDeleteCommand(key);
             await _mediator.Send(command, cancellationToken);
             return NoContent();

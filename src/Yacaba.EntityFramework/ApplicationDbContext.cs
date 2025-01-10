@@ -8,6 +8,7 @@ namespace Yacaba.EntityFramework {
 
         public DbSet<Organisation> Organisations { get; set; }
         public DbSet<Gym> Gyms { get; set; }
+        public DbSet<Wall> Walls { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 

@@ -1,7 +1,7 @@
 ﻿namespace Yacaba.Domain.Models {
     public class Gym {
 
-        public Int64 Id { get; set; } = default!;
+        public Int64 Id { get; set; }
 
         public required String Name { get; set; }
 
@@ -15,6 +15,8 @@
 
         public Int64? OrganisationId { get; set; }
         public Organisation? Organisation { get; set; }
+
+        public ICollection<Wall> Walls { get; set; } = [];
 
     }
 }
