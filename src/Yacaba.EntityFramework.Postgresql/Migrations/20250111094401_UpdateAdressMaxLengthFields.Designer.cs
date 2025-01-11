@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Yacaba.EntityFramework;
@@ -11,9 +12,11 @@ using Yacaba.EntityFramework;
 namespace Yacaba.EntityFramework.Postgresql.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20250111094401_UpdateAdressMaxLengthFields")]
+    partial class UpdateAdressMaxLengthFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -369,11 +372,9 @@ namespace Yacaba.EntityFramework.Postgresql.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Name")
+                    b.HasIndex("OrganisationId", "Name")
                         .IsUnique()
                         .HasDatabaseName("ix_gym_name");
-
-                    b.HasIndex("OrganisationId");
 
                     b.ToTable("GYMS", (string)null);
                 });

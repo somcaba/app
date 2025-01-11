@@ -4,12 +4,15 @@ using FluentValidation;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.OData;
 using Microsoft.AspNetCore.OData.Formatter.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Logging;
 using Scalar.AspNetCore;
 using Yacaba.Api;
+using Yacaba.Core.Api.Filters;
 using Yacaba.Core.Odata;
 using Yacaba.Core.Odata.ModelBuilder;
 using Yacaba.Core.Odata.Serializer;
@@ -160,7 +163,10 @@ OdataModelBuilder modelBuilder = builder.Services.AddOdataModelBuilder(
     typeof(OdataConfigurationBuilderExtensions).Assembly
 );
 
-builder.Services.AddControllersWithViews()
+builder.Services
+    .AddControllersWithViews(options => {
+        options.Filters.Add<FluentValidationExceptionFilter>();
+    })
     .AddApplicationPart(typeof(_ApiAssembly).Assembly)
     .AddControllersAsServices()
     .AddOData(options => {
@@ -185,6 +191,8 @@ builder.Services.AddControllersWithViews()
         options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
     });
 
+
+builder.Services.AddProblemDetails();
 
 //builder.Services.AddAutoMapper(options => {
 //    options.AddExpressionMapping();
@@ -214,8 +222,12 @@ builder.Services.AddHostedService<Worker>();
 
 WebApplication app = builder.Build();
 
+app.UseExceptionHandler();
+app.UseStatusCodePages();
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment()) {
+    app.UseDeveloperExceptionPage();
     app.UseWebAssemblyDebugging();
     app.UseMigrationsEndPoint();
     app.UseODataRouteDebug();

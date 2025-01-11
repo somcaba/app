@@ -50,6 +50,7 @@ namespace Yacaba.Api.Controllers {
         }
 
         [HttpPost]
+        [EnableQuery]
         [ProducesResponseType(typeof(Gym), statusCode: StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ProblemDetails), statusCode: StatusCodes.Status404NotFound)]
         [ProducesResponseType((Int32)HttpStatusCode.BadRequest)]

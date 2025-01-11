@@ -15,15 +15,15 @@ namespace Yacaba.EntityFramework.Datas.Configuration {
             builder.Property(p => p.IsOffical).HasColumnName("is_official");
             builder.Property(p => p.OrganisationId).HasColumnName("id_organisation_fk");
 
-            builder.HasIndex(p => new { p.OrganisationId, p.Name }).IsUnique(true).HasDatabaseName("ix_gym_name");
+            builder.HasIndex(p => p.Name).IsUnique(true).HasDatabaseName("ix_gym_name");
 
             builder.OwnsOne(p => p.Address, addressBuilder => {
                 addressBuilder.Property(p => p.Line1).HasMaxLength(200).HasColumnName("address_line1");
                 addressBuilder.Property(p => p.Line2).HasMaxLength(200).HasColumnName("address_line2");
                 addressBuilder.Property(p => p.Line3).HasMaxLength(200).HasColumnName("address_line3");
-                addressBuilder.Property(p => p.PostalCode).HasColumnName("address_npa");
+                addressBuilder.Property(p => p.PostalCode).HasMaxLength(5).HasColumnName("address_npa");
                 addressBuilder.Property(p => p.Locality).HasColumnName("address_locality");
-                addressBuilder.Property(p => p.CountryCode).HasColumnName("address_coutry");
+                addressBuilder.Property(p => p.CountryCode).HasMaxLength(2).HasColumnName("address_coutry");
             });
             builder.OwnsOne(p => p.Location, locationBuilder => {
                 locationBuilder.Property(p => p.Latitude).HasColumnName("location_latitude");

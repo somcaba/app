@@ -1,7 +1,9 @@
 ﻿using FluentValidation;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Yacaba.Domain.Requests;
 using Yacaba.Domain.Stores;
+using Yacaba.EntityFramework;
 
 namespace Yacaba.Api.Application.Commands {
 
@@ -36,10 +38,21 @@ namespace Yacaba.Api.Application.Commands {
     }
 
     public class GymUpdateCommandValidator : AbstractValidator<GymUpdateRequest> {
-        public GymUpdateCommandValidator() {
+
+        private readonly ApplicationDbContext _context;
+
+        public GymUpdateCommandValidator(ApplicationDbContext context) {
+            _context = context;
+
             RuleFor(p => p.Id).NotEmpty();
-            Include(new GymCreateCommandValidator());
+            RuleFor(p => p.Id).MustAsync(IsExistingGymAsync);
+            Include(new GymCreateCommandValidator(context));
         }
+
+        private async Task<Boolean> IsExistingGymAsync(Int64 gymId, CancellationToken cancellationToken) {
+            return await _context.Gyms.AnyAsync(p => p.Id == gymId, cancellationToken: cancellationToken).ConfigureAwait(false) == true;
+        }
+
     }
 
 }
